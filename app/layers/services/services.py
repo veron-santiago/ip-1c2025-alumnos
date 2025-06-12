@@ -20,8 +20,18 @@ def filterByCharacter(name):
 
     for card in getAllImages():
         # debe verificar si el name está contenido en el nombre de la card, antes de agregarlo al listado de filtered_cards.
-        filtered_cards.append(card)
+        if name.lower() in card.name.lower():
+            filtered_cards.append(card)
 
+    return filtered_cards
+
+def filterFavouritesByCharacter(request, name):
+    filtered_cards = []
+
+    for card in getAllFavourites(request):
+        if name.lower() in card.name.lower():
+            filtered_cards.append(card)
+    
     return filtered_cards
 
 # función que filtra las cards según su tipo.

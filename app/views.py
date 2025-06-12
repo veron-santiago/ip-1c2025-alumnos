@@ -4,7 +4,6 @@ from django.shortcuts import redirect, render
 from .layers.services import services
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from layers.services import services
 
 def index_page(request):
     return render(request, 'index.html')
@@ -24,9 +23,9 @@ def search(request):
     name = request.POST.get('query', '')
 
     # si el usuario ingresó algo en el buscador, se deben filtrar las imágenes por dicho ingreso.
-    if (name != ''):
-        images = []
-        favourite_list = []
+    if (name.strip() != ''):
+        images = services.filterByCharacter(name)
+        favourite_list = services.filterFavouritesByCharacter(request, name)
 
         return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
     else:
