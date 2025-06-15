@@ -4,18 +4,15 @@ from django.shortcuts import redirect, render
 from .layers.services import services
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from layers.services import services
 
 def index_page(request):
     return render(request, 'index.html')
 
 # esta función obtiene 2 listados: uno de las imágenes de la API y otro de favoritos, ambos en formato Card, y los dibuja en el template 'home.html'.
 def home(request):
-    images = services.getAllImages()
 
-    # Cuando se implementen 'login' y 'favoritos' hay que descomentar la línea que esta abajo, esto es un recordatorio:
-    # favourite_list = services.getAllFavourites(request)
-    favourite_list = []
+    images = services.getAllImages()
+    favourite_list = services.getAllFavourites(request)
 
     return render(request, 'home.html', {
         'images': images,
