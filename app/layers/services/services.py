@@ -3,6 +3,7 @@ from ..transport import transport
 from ...config import config
 from ..persistence import repositories
 from ..utilities import translator
+from ..utilities import filters
 from django.contrib.auth import get_user
 
 # función que devuelve un listado de cards. Cada card representa una imagen de la API de Pokemon
@@ -25,23 +26,10 @@ def getAllImages():
 
 # función que filtra según el nombre del pokemon.
 def filterByCharacter(name):
-    filtered_cards = []
-    
-    for card in getAllImages():
-        # debe verificar si el name está contenido en el nombre de la card, antes de agregarlo al listado de filtered_cards.
-        if name.lower() in card.name.lower():
-            filtered_cards.append(card)
+    return filters.filterCardsListByName(name, getAllImages())
 
-    return filtered_cards
-
-def filterFavouritesByCharacter(request, name):
-    filtered_cards = []
-
-    for card in getAllFavourites(request):
-        if name.lower() in card.name.lower():
-            filtered_cards.append(card)
-    
-    return filtered_cards
+def filterFavoritesByCharacter(request, name):
+    return filters.filterCardsListByName(name, getAllFavorites(request))
 
 # función que filtra las cards según su tipo.
 def filterByType(type_filter):
@@ -63,7 +51,7 @@ def saveFavourite(request):
     return repositories.save_favourite(fav)  # lo guardamos en la BD.
 
 # usados desde el template 'favourites.html'
-def getAllFavourites(request):
+def getAllFavorites(request):
     if not request.user.is_authenticated:
         return []
     else:

@@ -12,7 +12,7 @@ def index_page(request):
 def home(request):
 
     images = services.getAllImages()
-    favourite_list = services.getAllFavourites(request)
+    favourite_list = services.getAllFavorites(request)
 
     return render(request, 'home.html', {
         'images': images,
@@ -26,7 +26,7 @@ def search(request):
     # si el usuario ingresó algo en el buscador, se deben filtrar las imágenes por dicho ingreso.
     if (name.strip() != ''):
         images = services.filterByCharacter(name)
-        favourite_list = services.filterFavouritesByCharacter(request, name)
+        favourite_list = services.filterFavoritesByCharacter(request, name)
 
         return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
     else:
