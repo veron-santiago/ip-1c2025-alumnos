@@ -1,4 +1,23 @@
-{% extends 'header.html' %} {% block content %}
+{% extends 'header.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/spinner.css' %}">
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const spinner = document.getElementById('spinnerOverlay');
+      spinner.style.display = 'flex'; // Mostrar el spinner
+    
+      window.addEventListener('load', function () {
+        spinner.style.display = 'none'; // Ocultar el spinner cuando todo termina de cargar
+      });
+    });
+    </script>
+{% block content %}
+<!-- Spinner con Poké Ball -->
+<div id="spinnerOverlay" class="spinner-overlay">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" class="poke-spinner" alt="Cargando...">
+  </div>
+
 <main>
     <h1 class="text-center">Buscador de Pokemon</h1>
 
