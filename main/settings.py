@@ -120,3 +120,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # VARIABLES QUE INTEGRAN LOS REDIRECTS DE AUTH
 LOGIN_REDIRECT_URL = 'index-page'
 LOGOUT_REDIRECT_URL = 'index-page'
+
+# CONFIGURACIÓN PARA EL ENVÍO DE EMAILS
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'proyecto.ip.ungs@gmail.com'
+EMAIL_HOST_PASSWORD = 'fxyuzmazhglzfpsa'

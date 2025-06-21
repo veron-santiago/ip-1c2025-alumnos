@@ -1,0 +1,71 @@
+{% extends 'header.html' %}
+{% block content %}
+<div class="register-form" style="text-align: center; position: relative;">
+    <form action="{% url 'register' %}" method="POST" style="display: block; margin: 0 auto; max-width: 300px;">
+        {% csrf_token %}
+        <h2 class="text-center">Registro de Usuario</h2>
+        <div class="form-group" style="margin-bottom: 5%;">
+            <input type="text" name="firstname" id="firstname" class="form-control" placeholder="Nombre" required value="{{ form.data.firstname }}">
+        </div>
+        <div class="form-group" style="margin-bottom: 5%;">
+            <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Apellido" required value="{{ form.data.lastname }}">
+        </div>
+        <div class="form-group" style="margin-bottom: 5%;">
+            <input type="text" name="username" id="username" class="form-control" placeholder="Nombre de usuario" required value="{{ form.data.username }}">
+        </div>
+        <div class="form-group" style="margin-bottom: 5%;">
+            <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña" required value="{{ form.data.password }}">
+        </div>
+        <div class="form-group" style="margin-bottom: 5%;">
+            <input type="email" name="email" id="email" class="form-control" placeholder="Correo Electrónico" required value="{{ form.data.email }}">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
+        </div>
+
+        {% if messages %}
+            <div id="message-container" style="
+                display: inline-block;
+                margin: 20px auto 0 auto;
+                padding: 0;
+                border-radius: 10px;
+                transition: opacity 0.5s ease;
+                z-index: 10;
+                text-align: center;
+            ">
+                {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                        <p style="
+                            background-color: #e6ffe6;
+                            color: #006400;
+                            margin: 0 0 10px;
+                            padding: 10px 20px;
+                            border-radius: 10px;
+                            font-weight: bold;
+                        ">{{ message }}</p>
+                    {% else %}
+                        <p style="
+                            background-color: #ffe6e6;
+                            color: #ba1e1e;
+                            margin: 0 0 10px;
+                            padding: 10px 20px;
+                            border-radius: 10px;
+                            font-weight: bold;
+                        ">{{ message }}</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <script>
+                setTimeout(function() {
+                    var c = document.getElementById('message-container');
+                    if (c) {
+                        c.style.opacity = '0';
+                        setTimeout(() => c.style.display = 'none', 500);
+                    }
+                }, 3000);
+            </script>
+        {% endif %}
+
+    </form>
+</div>
+{% endblock %}
