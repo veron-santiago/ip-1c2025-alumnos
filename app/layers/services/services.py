@@ -28,6 +28,7 @@ def getAllImages():
 def filterByCharacter(name):
     return filters.filterCardsListByName(name, getAllImages())
 
+# función que filtra las cards favoritas según el nombre del pokemon.
 def filterFavoritesByCharacter(request, name):
     return filters.filterCardsListByName(name, getAllFavorites(request))
 
@@ -38,6 +39,18 @@ def filterByType(type_filter):
     type_filter = type_filter.lower()  # Convertir a minúsculas para comparación
 
     for card in getAllImages():
+        if type_filter in [t.lower() for t in card.types]:
+            filtered_cards.append(card)
+
+    return filtered_cards
+
+# función que filtra las cards en favoritas según su tipo.
+def filterFavoritesByType(type_filter):
+    filtered_cards = []
+
+    type_filter = type_filter.lower()  # Convertir a minúsculas para comparación
+
+    for card in getAllFavorites():
         if type_filter in [t.lower() for t in card.types]:
             filtered_cards.append(card)
 

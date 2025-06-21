@@ -38,7 +38,7 @@ def filter_by_type(request):
 
     if type != '':
         images = services.filterByType(type) # debe traer un listado filtrado de imágenes, segun si es o contiene ese tipo.
-        favourite_list = services.getAllFavorites(request)
+        favourite_list = services.filterFavoritesByType(type)
 
         return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
     else:
