@@ -27,21 +27,14 @@ def home(request):
 
 # Función para el alta de usuarios. Crea un objeto User con los datos del formulario y envía un correo con las credenciales de acceso (usuario y contraseña).
 def register(request):
-    form = RegisterForm()
+    form = RegisterForm(request.POST or None)
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
         if form.is_valid():
-
             firstname = form.cleaned_data['firstname']
             lastname = form.cleaned_data['lastname']
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             email = form.cleaned_data['email']
-
-            if User.objects.filter(username=username).exists():
-                messages.error(request, 'El nombre de usuario ya está en uso. Por favor, elija otro.')
-                return render(request, 'registration/register.html', {'form': form})
-
 
             user = User.objects.create_user(
                 first_name=firstname,
@@ -65,11 +58,14 @@ def register(request):
                 Saludos!
                 '''
 
-            recipient = form.cleaned_data.get('email')
-            send_mail(subject, 
-              message, settings.EMAIL_HOST_USER, [recipient], fail_silently=False)
+            recipient = email
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [recipient], fail_silently=False)
             messages.success(request, 'Usuario registrado con éxito!')
             return redirect('register')
+        else:
+            if form.errors.get('username'):
+                for e in form.errors['username']:
+                    messages.error(request, e)
     return render(request, 'registration/register.html', {'form': form})
 
 # función utilizada en el buscador.
