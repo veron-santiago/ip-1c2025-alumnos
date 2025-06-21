@@ -45,12 +45,12 @@ def filterByType(type_filter):
     return filtered_cards
 
 # función que filtra las cards en favoritas según su tipo.
-def filterFavoritesByType(type_filter):
+def filterFavoritesByType(request, type_filter):
     filtered_cards = []
 
     type_filter = type_filter.lower()  # Convertir a minúsculas para comparación
 
-    for card in getAllFavorites():
+    for card in getAllFavorites(request):
         if type_filter in [t.lower() for t in card.types]:
             filtered_cards.append(card)
 
