@@ -112,3 +112,8 @@ def deleteFavourite(request):
     if request.method == 'POST':
         services.deleteFavourite(request)
     return redirect('favoritos')
+
+@login_required
+def exit(request):
+    logout(request)
+    return redirect('home')
