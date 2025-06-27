@@ -20,6 +20,10 @@ def home(request):
     images = services.getAllImages()
     favourite_list = services.getAllFavorites(request)
 
+    # Añade los íconos de los tipos de pokemon
+    for img in images:
+        img.type_icons = [services.get_type_icon_url_by_name(t) for t in img.types]
+
     return render(request, 'home.html', {
         'images': images,
         'favourite_list': favourite_list

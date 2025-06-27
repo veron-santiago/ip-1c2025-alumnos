@@ -87,12 +87,12 @@
                   </div>
                   
                   <div class="w-100">
-                    <div class="alert alert-warning alert-dismissible fade show text-center mb-0" role="alert">
-                      {% for poketype in img.types %}
-                        <strong><em>{{ poketype }}</em></strong>
+                    <div class="d-flex justify-content-center mb-3">
+                      {% for icon_url in img.type_icons %}
+                        <img src="{{ icon_url }}" alt="type" class="me-1">
                       {% endfor %}
-                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
+                    
                   </div>
                 </div>
                 {% if request.user.is_authenticated %}
