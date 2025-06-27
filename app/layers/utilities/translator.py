@@ -6,9 +6,9 @@ from app.layers.utilities.card import Card
 def fromRequestIntoCard(poke_data):
     card = Card(
         id=poke_data.get('id'),
-        name=poke_data.get('name'),
-        height=poke_data.get('height'),
-        weight=poke_data.get('weight'),
+        name=poke_data.get('name').capitalize(),
+        height=str(float(poke_data.get('height')) / 10) + " M",
+        weight=str(float(poke_data.get('weight')) / 10) + " Kg",
         base=poke_data.get('base_experience'),
         image=safe_get(poke_data, 'sprites', 'other', 'official-artwork', 'front_default'),
         types=getTypes(poke_data)
