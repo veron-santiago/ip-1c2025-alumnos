@@ -1,27 +1,53 @@
+/* Fondo blanco semitransparente que cubre toda la pantalla */
 .spinner-overlay {
-  display: none; /* Oculto al principio */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con transparencia */
-  z-index: 9999;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 9999;
 }
 
-.poke-spinner {
-  width: 100px;
-  height: 100px;
-  animation: girar 1s linear infinite;
+/* Spinner con círculos animados */
+.spinner {
+  width: 64px;
+  height: 64px;
+  position: relative;
 }
 
-@keyframes girar {
+.spinner div {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #333;
+  border-radius: 50%;
+  animation: spinnerAnim 1.2s linear infinite;
+}
+
+.spinner div:nth-child(1) { top: 29px; left: 53px; animation-delay: 0s; }
+.spinner div:nth-child(2) { top: 18px; left: 50px; animation-delay: -0.1s; }
+.spinner div:nth-child(3) { top: 9px; left: 41px; animation-delay: -0.2s; }
+.spinner div:nth-child(4) { top: 6px; left: 29px; animation-delay: -0.3s; }
+.spinner div:nth-child(5) { top: 9px; left: 18px; animation-delay: -0.4s; }
+.spinner div:nth-child(6) { top: 18px; left: 9px; animation-delay: -0.5s; }
+.spinner div:nth-child(7) { top: 29px; left: 6px; animation-delay: -0.6s; }
+.spinner div:nth-child(8) { top: 41px; left: 9px; animation-delay: -0.7s; }
+.spinner div:nth-child(9) { top: 50px; left: 18px; animation-delay: -0.8s; }
+.spinner div:nth-child(10) { top: 53px; left: 29px; animation-delay: -0.9s; }
+.spinner div:nth-child(11) { top: 50px; left: 41px; animation-delay: -1s; }
+.spinner div:nth-child(12) { top: 41px; left: 50px; animation-delay: -1.1s; }
+
+@keyframes spinnerAnim {
   0% {
-    transform: rotate(0deg);
+    transform: scale(1);
+    opacity: 1;
   }
   100% {
-    transform: rotate(360deg);
+    transform: scale(0.3);
+    opacity: 0.3;
   }
 }
