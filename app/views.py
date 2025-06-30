@@ -19,10 +19,12 @@ def home(request):
 
     images = services.getAllImages()
     favourite_list = services.getAllFavorites(request)
+    favorite_names = services.getAllNames(favourite_list)
 
     return render(request, 'home.html', {
         'images': images,
-        'favourite_list': favourite_list
+        'favourite_list': favourite_list,
+        'favorite_names' : favorite_names
     })
 
 # Función para el alta de usuarios. Crea un objeto User con los datos del formulario y envía un correo con las credenciales de acceso (usuario y contraseña).

@@ -80,7 +80,7 @@
                 <input type="hidden" name="weight" value="{{ img.weight }}">
                 <input type="hidden" name="types" value="{{ img.types }}">
                 <input type="hidden" name="image" value="{{ img.image }}">
-                {% if img in favourite_list %}
+                {% if img.name in favorite_names %}
                 <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white" disabled>✔️ Favoritos</button>
                 {% else %}
                 <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white">❤️ Favoritos</button>
@@ -102,43 +102,39 @@
   window.addEventListener('load', function () {
     const spinner = document.getElementById('spinnerOverlay');
     const images = document.querySelectorAll('img');
-
     let loadedCount = 0;
     const totalImages = images.length;
-
-    if (totalImages === 0) {
-      spinner.style.display = 'none';
-    }
-
-    images.forEach(function(img) {
+    if (totalImages === 0) { spinner.style.display = 'none'; }
+    images.forEach(function (img) {
       if (img.complete) {
         loadedCount++;
       } else {
         img.addEventListener('load', function () {
           loadedCount++;
-          if (loadedCount === totalImages) {
-            spinner.style.display = 'none';
-          }
+          if (loadedCount === totalImages) { spinner.style.display = 'none'; }
         });
       }
     });
+    if (loadedCount === totalImages) { spinner.style.display = 'none'; }
 
-    if (loadedCount === totalImages) {
-      spinner.style.display = 'none';
+    const pos = localStorage.getItem('scrollPos');
+    if (pos !== null) {
+      window.scrollTo(0, parseInt(pos));
+      localStorage.removeItem('scrollPos');
     }
   });
 
-  // Mostrar spinner al enviar cualquier formulario (buscador o tipo)
   document.addEventListener('DOMContentLoaded', function () {
     const spinner = document.getElementById('spinnerOverlay');
     const forms = document.querySelectorAll('form');
-
     forms.forEach(function (form) {
       form.addEventListener('submit', function () {
+        localStorage.setItem('scrollPos', window.scrollY);
         spinner.style.display = 'flex';
       });
     });
   });
 </script>
+
 
 {% endblock %}

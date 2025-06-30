@@ -24,6 +24,13 @@ def getAllImages():
 
     return cards
 
+# función que devuelve todos los nombres de una lista de cards
+def getAllNames(card_list):
+    names = []
+    for card in card_list:
+        names.append(card.name)
+    return names
+
 # función que filtra según el nombre del pokemon.
 def filterByCharacter(name):
     return filters.filterCardsListByName(name, getAllImages())
