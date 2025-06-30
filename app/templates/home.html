@@ -11,19 +11,25 @@
     <div></div><div></div><div></div><div></div><div></div><div></div>
     <div></div><div></div><div></div><div></div><div></div><div></div>
   </div>
-</div>
-
+</div>  
 <main>
   <h1 class="text-center">Buscador de Pokemon</h1>
 
   <div class="d-flex justify-content-center" style="margin-bottom: 1%">
     <!-- Buscador del sitio -->
-    <form class="d-flex" action="{% url 'buscar' %}" method="POST">
-      {% csrf_token %}
-      <input class="form-control me-2" type="search" name="query" placeholder="Pikachu, Charizard, Ditto" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Buscar</button>
-    </form>
-  </div>
+    <form action="{% url 'buscar' %}" method="POST" style="max-width: 500px; width: 100%; margin: auto;">
+        {% csrf_token %}
+        <div class="input-group">
+          <input type="search" name="query" class="form-control" placeholder="Pikachu, Charizard, Ditto, etc" aria-label="Buscar Pokémon">
+          <button class="btn btn-success" type="submit">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.442.656a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+            </svg>
+          </button>
+        </div>
+      </form>
+      
+</div>
 
   <div class="d-flex gap-1 col-2 mx-auto mb-3">
     <form method="post" action="{% url 'filter_by_type' %}">
@@ -45,56 +51,68 @@
     </form>
   </div>
 
-  <div class="row row-cols-1 row-cols-md-3 g-4">
-    {% if images|length == 0 %}
-    <h2 class="text-center">La búsqueda no arrojó resultados...</h2>
-    {% else %}
-    {% for img in images %}
-    <div class="col">
-      <div class="card {% if 'fire' in img.types %}border-danger{% elif 'water' in img.types %}border-primary{% elif 'grass' in img.types %}border-success{% else %}border-warning{% endif %} mb-3 ms-5" style="max-width: 540px;">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src="{{ img.image }}" class="card-img-top" alt="imagen">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h3 class="card-title">{{ img.name }} #{{ img.id }} <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" alt="Master Ball"></h3>
-              <p class="card-text">
-              <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                {% for poketype in img.types %}
-                <strong><em>{{ poketype }}</em></strong>
-                {% endfor %}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-              </p>
-              <p class="card-text"><small class="text-body-secondary">Altura: {{ img.height }}</small></p>
-              <p class="card-text"><small class="text-body-secondary">Peso: {{ img.weight }}</small></p>
-              <p class="card-text"><small class="text-body-secondary">Nivel de experiencia base: {{ img.base }}</small></p>
-            </div>
-            {% if request.user.is_authenticated %}
-            <div class="card-footer text-center">
-              <form method="post" action="{% url 'agregar-favorito' %}">
-                {% csrf_token %}
-                <input type="hidden" name="name" value="{{ img.name }}">
-                <input type="hidden" name="height" value="{{ img.height }}">
-                <input type="hidden" name="weight" value="{{ img.weight }}">
-                <input type="hidden" name="types" value="{{ img.types }}">
-                <input type="hidden" name="image" value="{{ img.image }}">
-                {% if img.name in favorite_names %}
-                <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white" disabled>✔️ Favoritos</button>
-                {% else %}
-                <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white">❤️ Favoritos</button>
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% if images|length == 0 %}
+          <h2 class="text-center">La búsqueda no arrojó resultados...</h2>
+        {% else %}
+          {% for img in images %}
+            <div class="col">
+              <div class="card position-relative mb-0 ms-2 
+                {% if 'fire' in img.types %}border-danger
+                {% elif 'water' in img.types %}border-primary
+                {% elif 'grass' in img.types %}border-success
+                {% else %}border-warning
+                {% endif %}" style="max-width: 19rem;">
+                <span class="position-absolute top-0 start-0 m-2 badge bg-secondary">#{{ img.id }}</span>
+                <div class="card-body d-flex flex-column align-items-center">
+                  <img src="{{ img.image }}" class="card-img-top mb-3" style="width:96px;height:96px;" alt="{{ img.name }}">
+                  <h5 class="card-title text-center mb-3">{{ img.name }}</h5>
+
+                  <div class="d-flex justify-content-center mb-3">
+                    <div class="d-flex flex-column align-items-center mx-1">
+                      <button type="button" class="btn btn-outline-dark btn-sm" disabled>{{ img.height }}</button>
+                    </div>
+                    <div class="d-flex flex-column align-items-center mx-1">
+                      <button type="button" class="btn btn-outline-dark btn-sm" disabled>{{ img.weight }}</button>
+                    </div>
+                    <div class="d-flex flex-column align-items-center mx-1">
+                      <button type="button" class="btn btn-outline-dark btn-sm" disabled>{{ img.base }} EXP Base</button>
+                    </div>
+                  </div>
+                  
+                  <div class="w-100">
+                    <div class="d-flex justify-content-center mb-3">
+                      {% for icon_url in img.type_icons %}
+                        <img src="{{ icon_url }}" alt="type" class="me-1">
+                      {% endfor %}
+                    </div>
+                    
+                  </div>
+                </div>
+                {% if request.user.is_authenticated %}
+                <div class="card-footer text-center">
+                  <form method="post" action="{% url 'agregar-favorito' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="name" value="{{ img.name }}">
+                    <input type="hidden" name="height" value="{{ img.height }}">
+                    <input type="hidden" name="weight" value="{{ img.weight }}">
+                    <input type="hidden" name="types" value="{{ img.types }}">
+                    <input type="hidden" name="image" value="{{ img.image }}">
+                    {% if img.name in favorite_names %}
+                    <button type="submit" class="btn btn-primary btn-sm" style="color:white" disabled>✔️ Favoritos</button>
+                    {% else %}
+                    <button type="submit" class="btn btn-primary btn-sm" style="color:white">❤️ Favoritos</button>
+                    {% endif %}
+                  </form>
+                </div>
                 {% endif %}
-              </form>
+              </div>
             </div>
-            {% endif %}
-          </div>
-        </div>
-      </div>
+          {% endfor %}
+        {% endif %}
     </div>
-    {% endfor %}
-    {% endif %}
-  </div>
+      
+      
 </main>
 
 <!-- Script que espera a que TODAS las imágenes terminen de cargarse -->

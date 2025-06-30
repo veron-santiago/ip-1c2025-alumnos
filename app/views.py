@@ -21,6 +21,10 @@ def home(request):
     favourite_list = services.getAllFavorites(request)
     favorite_names = services.getAllNames(favourite_list)
 
+    # Añade los íconos de los tipos de pokemon
+    for img in images:
+        img.type_icons = [services.get_type_icon_url_by_name(t) for t in img.types]
+
     return render(request, 'home.html', {
         'images': images,
         'favourite_list': favourite_list,
@@ -78,8 +82,9 @@ def search(request):
     if (name.strip() != ''):
         images = services.filterByCharacter(name)
         favourite_list = services.filterFavoritesByCharacter(request, name)
+        favorite_names = services.getAllNames(favourite_list)
 
-        return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
+        return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list, 'favorite_names': favorite_names})
     else:
         return redirect('home')
 
@@ -90,8 +95,9 @@ def filter_by_type(request):
     if type != '':
         images = services.filterByType(type) # debe traer un listado filtrado de imágenes, segun si es o contiene ese tipo.
         favourite_list = services.filterFavoritesByType(request, type)
+        favorite_names = services.getAllNames(favourite_list)
 
-        return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
+        return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list, 'favorite_names': favorite_names })
     else:
         return redirect('home')
 

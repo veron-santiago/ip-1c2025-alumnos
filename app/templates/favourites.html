@@ -22,8 +22,12 @@
                 <tbody>
                     {% for favourite in favourite_list %}
                     <tr>
-                        <td>{{ favourite.id }}</td>
-                        <td><img src="{{ favourite.image }}" alt="" style="max-width: 200px; max-height: 200px;"></td>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <div class="image-box">
+                                <img src="{{ favourite.image }}" alt="{{ favourite.name }}">
+                            </div>
+                        </td>                        
                         <td>{{ favourite.name }}</td>
                         <td>{{ favourite.height }}</td>
                         <td>{{ favourite.weight }}</td>
